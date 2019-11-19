@@ -19,16 +19,16 @@ object Drivetrain : SaturnSubsystem(), Loggable {
 
     private val periodicIO = PeriodicIO()
 
-    private val leftMotor = CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless)
-    private val leftSlave = CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless)
-
-    private val rightMotor = CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless)
-    private val rightSlave = CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
+    private val leftMotor = CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless)
+//    private val leftSlave = CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless)
+//
+    private val rightMotor = CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
+//    private val rightSlave = CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
 
 
     override fun lateInit() {
-        rightSlave.follow(rightMotor)
-        leftSlave.follow(leftMotor)
+//        rightSlave.follow(rightMotor)
+//        leftSlave.follow(leftMotor)
     }
 
     override fun setNeutral() {
@@ -37,20 +37,20 @@ object Drivetrain : SaturnSubsystem(), Loggable {
     }
 
     override fun periodic() {
-        periodicIO.leftCurrent = leftMotor.outputCurrent
-        periodicIO.rightCurrent = rightMotor.outputCurrent
-        periodicIO.leftVoltage = leftMotor.appliedOutput * leftMotor.busVoltage
-        periodicIO.rightVoltage = rightMotor.appliedOutput * rightMotor.busVoltage
-
-
-        when(wantedState) {
-            State.Nothing -> {}
-            State.OpenLoop -> {
-                leftMotor.set(periodicIO.leftDemand)
-                rightMotor.set(periodicIO.rightDemand)
-            }
-        }
-        if(currentState != wantedState) currentState = wantedState
+//        periodicIO.leftCurrent = leftMotor.outputCurrent
+//        periodicIO.rightCurrent = rightMotor.outputCurrent
+//        periodicIO.leftVoltage = leftMotor.appliedOutput * leftMotor.busVoltage
+//        periodicIO.rightVoltage = rightMotor.appliedOutput * rightMotor.busVoltage
+//
+//
+//        when(wantedState) {
+//            State.Nothing -> {}
+//            State.OpenLoop -> {
+//                leftMotor.set(periodicIO.leftDemand)
+//                rightMotor.set(periodicIO.rightDemand)
+//            }
+//        }
+//        if(currentState != wantedState) currentState = wantedState
     }
 
 
@@ -116,10 +116,8 @@ object Drivetrain : SaturnSubsystem(), Loggable {
     }
 
     fun tankDrive(left: Double, right: Double) {
-        wantedState = State.OpenLoop
-        periodicIO.leftDemand = left
-        periodicIO.rightDemand = right
-
+        leftMotor.set(left)
+        rightMotor.set(right)
     }
 
     enum class State {

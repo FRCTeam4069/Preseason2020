@@ -6,7 +6,6 @@ import frc.team4069.saturn.lib.SaturnRobot
 import frc.team4069.saturn.lib.commands.SaturnSubsystem
 import frc.team4069.saturn.lib.hid.SaturnHID
 import io.github.oblarg.oblog.Loggable
-import io.github.oblarg.oblog.Logger
 
 object Robot : SaturnRobot() {
     private val loggableSubsystems = mutableListOf<Loggable>()
@@ -16,17 +15,22 @@ object Robot : SaturnRobot() {
         +Drivetrain
         +OI.driveController
 
-//        Logger.setCycleWarningsEnabled(false)
-//        Logger.configureLoggingAndConfig(this, false)
     }
 
     override fun robotPeriodic() {
-//        Logger.updateEntries()
         controllers.forEach(SaturnHID<*>::update)
     }
 
     override fun teleopInit() {
         DriveCommand().schedule()
+    }
+
+    override fun autonomousInit() {
+        VelocityPIDTest().schedule()
+    }
+
+    override fun disabledPeriodic() {
+        CommandScheduler.getInstance().cancelAll()
     }
 
     override operator fun SaturnSubsystem.unaryPlus() {

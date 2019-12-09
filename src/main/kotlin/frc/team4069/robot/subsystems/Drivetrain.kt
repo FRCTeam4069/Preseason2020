@@ -9,7 +9,6 @@ import frc.team4069.saturn.lib.mathematics.twodim.control.LTVUnicycleTracker
 import frc.team4069.saturn.lib.mathematics.twodim.control.TrajectoryTrackerOutput
 import frc.team4069.saturn.lib.mathematics.units.conversions.feet
 import frc.team4069.saturn.lib.mathematics.units.meter
-import frc.team4069.saturn.lib.mathematics.units.volt
 import frc.team4069.saturn.lib.motor.rev.SaturnMAX
 import frc.team4069.saturn.lib.sensors.SaturnPigeon
 import frc.team4069.saturn.lib.subsystem.DifferentialDriveModel
@@ -62,7 +61,7 @@ object Drivetrain : TankDriveSubsystem() {
     private val gyroTalon = TalonSRX(5)
     override val gyro = SaturnPigeon(gyroTalon)
 
-    override val driveModel = DifferentialDriveModel(2.3563.feet, 0.0, 0.0, 0.0)
+    override val driveModel = DifferentialDriveModel(2.3563.feet, Constants.DRIVETRAIN_KV, Constants.DRIVETRAIN_KA, Constants.DRIVETRAIN_KS)
     override val localization = DifferentialDriveLocalization(gyro, { leftEncoder.position }, { rightEncoder.position })
     override val trajectoryTracker = LTVUnicycleTracker(16.409255758939636,
         5.743092173917074,
@@ -118,8 +117,8 @@ object Drivetrain : TankDriveSubsystem() {
 
     override fun setOutput(output: TrajectoryTrackerOutput) {
         val demand = driveModel.getDemand(output)
-        leftMotor.setVelocity(demand.leftSetpoint, arbitraryFeedForward = demand.leftArbFF.volt)
-        rightMotor.setVelocity(demand.rightSetpoint, arbitraryFeedForward = demand.rightArbFF.volt)
+        leftMotor.setVelocity(demand.leftSetpoint, arbitraryFeedForward = demand.leftArbFF)
+        rightMotor.setVelocity(demand.rightSetpoint, arbitraryFeedForward = demand.rightArbFF)
     }
 
     enum class Gear {

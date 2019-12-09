@@ -59,7 +59,7 @@ dependencies {
     implementation "frc.team4069.saturn.lib:vendorCTRE:2020.0.0"
     implementation "frc.team4069.saturn.lib:vendorREV:2020.0.0"
 
-    implementation "com.github.Oblarg:Oblog:2.12.8"
+    implementation "com.github.Oblarg:command-rewrite-jitpack:1.1.4"
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
